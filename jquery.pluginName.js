@@ -9,8 +9,8 @@
 	function Plugin(element, options) {
 		this.options = $.extend( {}, defaults, options );
 
-		this.$el = $(element);
-		this.$target = this.$el.find(options && options.target || defaults.target);
+		this.$element = $(element);
+		this.$target = this.$element.find(options && options.target || defaults.target);
 
 		this._defaults = defaults;
 		this._name = pluginName;
@@ -22,6 +22,18 @@
 
 		init: function() {
 			this.bindEvents();
+		},
+
+		bindEvents: function() {
+			// Always use event delegation! https://learn.jquery.com/events/event-delegation/
+			// $(document).on('click', '.selector', functionName.bind(this));
+		},
+
+		// Unbind events that trigger methods
+		unbindEvents: function() {
+			// Unbind all events in our plugin's namespace that are attached
+			// to "this.$element".
+			// this.$element.off('.'+this._name);
 		},
 
 		// Remove plugin instance completely
@@ -42,35 +54,21 @@
 
 			this.unbindEvents();
 
-			this.$el.off('.' + pluginName);
-			this.$el.find('*').off('.' + pluginName);
+			this.$element.off('.' + pluginName);
+			this.$element.find('*').off('.' + pluginName);
 
-			this.$el.removeData(pluginName);
-			this.$el = null;
-		},
-
-		bindEvents: function() {
-			// Always use event delefation! https://learn.jquery.com/events/event-delegation/
-			// $('#list a').on('click', function(event) {
-			// 	event.preventDefault();
-			// 	console.log($(this).text());
-			// });
-		},
-
-		// Unbind events that trigger methods
-		unbindEvents: function() {
-			// Unbind all events in our plugin's namespace that are attached
-			// to "this.$element".
-			// this.$element.off('.'+this._name);
+			this.$element.removeData(pluginName);
+			this.$element = null;
 		}
 	};
 
 	// A really lightweight plugin wrapper around the constructor,
 	// preventing against multiple instantiations
 	$.fn[pluginName] = function ( options ) {
+
 		this.each(function () {
-			if (!$.data(this, 'plugin_' + pluginName)) {
-				$.data(this, 'plugin_' + pluginName, new Plugin( this, options ));
+			if(!$.data(this, 'plugin_' + pluginName)) {
+				$.data(this, 'plugin_' + pluginName, new Plugin(this, options));
 			}
 		});
 
