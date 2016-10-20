@@ -34,6 +34,8 @@
 			// Unbind all events in our plugin's namespace that are attached
 			// to "this.$element".
 			// this.$element.off('.' + this._name);
+			this.$element.off('.' + pluginName);
+			this.$element.find('*').off('.' + pluginName);
 		},
 
 		// Remove plugin instance completely
@@ -53,9 +55,6 @@
 
 
 			this.unbindEvents();
-
-			this.$element.off('.' + pluginName);
-			this.$element.find('*').off('.' + pluginName);
 
 			this.$element.removeData(pluginName);
 			this.$element = null;
