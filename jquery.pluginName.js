@@ -53,7 +53,6 @@
 			// Consequently, the destroy method can be called using:
 			// $('selector').data('plugin_myPluginName').destroy();
 
-
 			this.unbindEvents();
 
 			this.$element.removeData(pluginName);
