@@ -7,7 +7,7 @@
 
 	// The actual plugin constructor
 	function Plugin(element, options) {
-		this.options = $.extend( {}, defaults, options );
+		this.options = $.extend({}, defaults, options);
 
 		this.$element = $(element);
 		this.$target = this.$element.find(options && options.target || defaults.target);
@@ -33,7 +33,7 @@
 		unbindEvents: function() {
 			// Unbind all events in our plugin's namespace that are attached
 			// to "this.$element".
-			// this.$element.off('.'+this._name);
+			// this.$element.off('.' + this._name);
 		},
 
 		// Remove plugin instance completely
@@ -64,7 +64,7 @@
 
 	// A really lightweight plugin wrapper around the constructor,
 	// preventing against multiple instantiations
-	$.fn[pluginName] = function ( options ) {
+	$.fn[pluginName] = function (options) {
 
 		this.each(function () {
 			if(!$.data(this, 'plugin_' + pluginName)) {
